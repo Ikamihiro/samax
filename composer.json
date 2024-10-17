@@ -1,0 +1,34 @@
+{
+    "name": "joao/samax",
+    "license": "MIT",
+    "description": "A personal miniframework for personal tiny projects",
+    "autoload": {
+        "files": [
+            "core/Foundation/helpers.php"
+        ],
+        "psr-4": {
+            "Core\\": "core/",
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "João G. Silva",
+            "email": "joogabrielsntn66@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    }
+}

@@ -1,0 +1,39 @@
+# Composer dependencies
+/vendor/
+
+# Composer itself
+composer.phar
+
+# Environment variables
+.env
+
+# PHPStorm project files
+.idea/
+
+# Node modules
+node_modules/
+
+# Log files
+*.log
+
+# Cache directories
+/cache/
+/tmp/
+
+# PHPUnit
+.phpunit.result.cache
+
+# Coverage reports
+coverage/
+
+# User-specific files
+*.swp
+*.swo
+*.bak
+*.orig
+*.save
+*.tmp
+*.temp
+*.~*
+.DS_Store
+Thumbs.db
