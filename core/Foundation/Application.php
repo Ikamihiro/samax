@@ -3,6 +3,7 @@
 namespace Core\Foundation;
 
 use Core\Foundation\Container;
+use Core\Foundation\Env\LoadEnvironmentVariables;
 
 class Application extends Container
 {
@@ -64,6 +65,9 @@ class Application extends Container
         $this->loadManagers();
     }
 
+    /**
+     * Register itself in the container
+     */
     private function registerItSelf(): void
     {
         $this->singleton(Container::class, $this);
@@ -76,6 +80,9 @@ class Application extends Container
      */
     private function loadConfigurationFiles(): void
     {
+        // Before loading the configuration files, we need to load the environment variables
+        LoadEnvironmentVariables::load();
+
         // Load the configuration files
         $configFiles = glob($this->basePath . 'config/*.php');
 
@@ -110,7 +117,6 @@ class Application extends Container
              * @var Manager $manager
              */
             $manager->register();
-            // dd($manager);
             $manager->boot();
         }
     }

@@ -97,3 +97,17 @@ if (! function_exists('dd')) {
         die(1);
     }
 }
+
+if (! function_exists('env')) {
+    /**
+     * Get the environment variable
+     * 
+     * @param string $key
+     * 
+     * @return mixed
+     */
+    function env(string $key)
+    {
+        return $_ENV[$key] ?? null;
+    }
+}
