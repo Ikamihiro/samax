@@ -25,6 +25,7 @@ return [
     // List of service providers to load
     'managers' => [
         // Custom managers from application
-        App\Providers\RouteManager::class,
+        \App\Providers\RouteManager::class,
+        \App\Providers\DatabaseManager::class,
     ],
 ];

@@ -111,3 +111,15 @@ if (! function_exists('env')) {
         return $_ENV[$key] ?? null;
     }
 }
+
+if (! function_exists('database')) {
+    /**
+     * Get the database querier instance
+     * 
+     * @return \Core\Minimum\Database::class
+     */
+    function database()
+    {
+        return app()->make(\Core\Minimum\Database::class);
+    }
+}

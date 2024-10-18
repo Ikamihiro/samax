@@ -8,26 +8,6 @@ use Core\Foundation\Routing\Router;
 class RouteManager extends Manager
 {
     /**
-     * Register the manager
-     * 
-     * @return void
-     */
-    public function register(): void
-    {
-        //
-    }
-
-    /**
-     * Boot the manager
-     * 
-     * @return void
-     */
-    public function boot(): void
-    {
-        //
-    }
-
-    /**
      * Load the routes from a callback, a file or an array of files
      * 
      * @param mixed $callback

@@ -166,11 +166,18 @@ class Container implements ContainerContract
         // If the instance is already binded to the
         // container, we will return the instance
         if ($this->has($abstract)) {
-            // TODO: implemente a rebinding logic
+            // Unset the instance from the container
+            unset($this->bindings[$abstract]);
 
+            // Then, we will bind the instance to the container again
+            $this->singleton($abstract, $instance);
+
+            // Finally, we will return void
             return;
         }
 
+        // If the instance is null, we will bind
+        // the abstract as the instance
         if (is_null($instance)) {
             $instance = $abstract;
         }

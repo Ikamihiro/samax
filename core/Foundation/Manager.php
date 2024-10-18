@@ -18,4 +18,24 @@ abstract class Manager implements ManagerContract
     {
         $this->container = $container;
     }
+
+    /**
+     * Register the manager
+     * 
+     * @return void
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Boot the manager
+     * 
+     * @return void
+     */
+    public function boot(): void
+    {
+        //
+    }
 }
