@@ -14,7 +14,7 @@ class DatabaseManager extends Manager
     protected function loadDatabaseConnection()
     {
         // Get the database configuration
-        $config = $this->container->config->get('database');
+        $config = $this->container->config('database');
 
         // Get the default connection
         $connection = $config['connections'][$config['default']];

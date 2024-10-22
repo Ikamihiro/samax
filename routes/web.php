@@ -1,18 +1,5 @@
 <?php
 
-use Core\Foundation\Http\Request;
-use Core\Foundation\Http\Response;
+use App\Http\Controllers\RootController;
 
-router()->get('/', function (Request $request, Response $response) {
-    return $response->json([
-        'message' => 'Root',
-        ...$request->all()
-    ]);
-});
-
-router()->post('/', function (Request $request, Response $response) {
-    return $response->json([
-        'message' => 'Post',
-        ...$request->all()
-    ]);
-});
+router()->get('/', [RootController::class, 'index']);

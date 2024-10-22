@@ -143,4 +143,29 @@ class Application extends Container
         // so we can resolve it later on the application
         // $this->singleton($managerClass, $managerInstance);
     }
+
+    /**
+     * Get the configuration values
+     * 
+     * @return mixed
+     */
+    public function config(?string $key): mixed
+    {
+        if ($key) {
+            $value = $this->config;
+            $pathConfig = explode('.', $key);
+
+            foreach ($pathConfig as $config) {
+                if (! isset($value[$config])) {
+                    return null;
+                }
+
+                $value = $value[$config];
+            }
+
+            return $value;
+        }
+    
+        return $this->config;
+    }
 }

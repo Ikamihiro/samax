@@ -41,7 +41,7 @@ class Kernel
         $routeResolver = $this->container->make(RouteResolver::class);
 
         // Create a new response instance
-        $response = new Response;
+        $response = new Response();
 
         try {
             // Get the matched route
@@ -61,20 +61,20 @@ class Kernel
             );
         } catch (\Exception $e) {
             // TODO: Log and register the exception
-            $response = (new Response)->internalServerError();
+            $response = $response->internalServerError();
         }
 
         return $response;
     }
 
     /**
-     * Execute the terminate method on all middlewares
+     * Execute the finish method on all middlewares
      * 
      * @param Request $request
      * @param Response $response
      * @return void
      */
-    public function terminate(Request $request, Response $response): void
+    public function finish(Request $request, Response $response): void
     {
         $response->send();
     }

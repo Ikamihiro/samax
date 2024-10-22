@@ -26,7 +26,7 @@ class MySQLConnection extends AbstractConnection
         }
 
         return new static(
-            "mysql:host={$config['host']};dbname={$config['database']}",
+            "mysql:host={$config['host']};port=3306;dbname={$config['database']}",
             $config['username'],
             $config['password']
         );

@@ -116,10 +116,25 @@ if (! function_exists('database')) {
     /**
      * Get the database querier instance
      * 
-     * @return \Core\Minimum\Database::class
+     * @return \Core\Minimum\Database
      */
     function database()
     {
         return app()->make(\Core\Minimum\Database::class);
+    }
+}
+
+if (! function_exists('response')) {
+    /**
+     * Get the response instance
+     * 
+     * @param string $content
+     * @param int $status
+     * 
+     * @return \Core\Foundation\Http\Response
+     */
+    function response()
+    {
+        return new \Core\Foundation\Http\Response();
     }
 }

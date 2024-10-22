@@ -24,4 +24,4 @@ $kernel = $app->make(Core\Foundation\Kernel::class);
 $response = $kernel->handle($request);
 
 // Then send the response back to the browser
-$kernel->terminate($request, $response);
+$kernel->finish($request, $response);

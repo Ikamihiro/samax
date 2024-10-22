@@ -69,6 +69,17 @@ class Response
     }
 
     /**
+     * Clean the headers of the response.
+     * 
+     * @return $this
+     */
+    public function cleanHeaders()
+    {
+        $this->headers = [];
+        return $this;
+    }
+
+    /**
      * Get the headers of the response.
      * 
      * @return array
@@ -124,7 +135,7 @@ class Response
      */
     public function redirect($url)
     {
-        return $this->setHeader("Location: $url");
+        return $this->cleanHeaders()->setHeader("Location: $url");
     }
 
     /**
@@ -136,9 +147,10 @@ class Response
      */
     public function json($data, $statusCode = 200)
     {
-        $this->setStatusCode($statusCode);
-        $this->setHeader('Content-Type: application/json');
-        return $this->setContent(json_encode($data));
+        return $this->cleanHeaders()
+            ->setStatusCode($statusCode)
+            ->setHeader('Content-Type: application/json')
+            ->setContent(json_encode($data));
     }
 
     /**
@@ -149,9 +161,10 @@ class Response
      */
     public function noContent()
     {
-        $this->setStatusCode(204);
-        $this->setHeader('Content-Type: application/json');
-        return $this->setContent('');
+        return $this->cleanHeaders()
+            ->setStatusCode(204)
+            ->setHeader('Content-Type: application/json')
+            ->setContent('');
     }
 
     /**
@@ -161,8 +174,9 @@ class Response
      */
     public function notFound()
     {
-        $this->setStatusCode(404);
-        return $this->setContent('Not found');
+        return $this->cleanHeaders()
+            ->setStatusCode(404)
+            ->setContent('Not found');
     }
 
     /**
@@ -172,7 +186,8 @@ class Response
      */
     public function internalServerError()
     {
-        $this->setStatusCode(500);
-        return $this->setContent('Internal server error');
+        return $this->setStatusCode(500)
+            ->cleanHeaders()
+            ->setContent('Internal server error');
     }
 }

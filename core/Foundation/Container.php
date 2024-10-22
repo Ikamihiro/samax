@@ -233,10 +233,10 @@ class Container implements ContainerContract
         // If the callback is an array, we will
         // call the controller method
         if (is_array($callback)) {
-            $controller = new $callback[0];
+            $controller = $callback[0];
             $method = $callback[1];
 
-            return $controller->$method(...$parameters);
+            return $this->make($controller)->$method(...$parameters);
         }
 
         // If the callback is a string, we will
