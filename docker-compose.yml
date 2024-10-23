@@ -23,9 +23,15 @@ services:
       MYSQL_PASSWORD: "${DB_PASSWORD}"
     ports:
       - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
     networks:
       - samax
 
 networks:
   samax:
     driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

@@ -2,6 +2,8 @@
 
 namespace Core\Foundation\Routing;
 
+use Core\Foundation\Http\Middleware;
+
 class Route
 {
     /**
@@ -25,11 +27,19 @@ class Route
      */
     protected $callback;
 
+    /**
+     * The list of middleware of the route
+     * 
+     * @var Middleware[] $middlewares
+     */
+    protected array $middlewares;
+
     public function __construct(string $name, string $uri, $callback)
     {
         $this->name = $name ?? $this->buildName($uri);
         $this->uri = $uri;
         $this->callback = $callback;
+        $this->middlewares = [];
     }
 
     private function buildName(string $uri): string
@@ -65,5 +75,41 @@ class Route
     public function callback()
     {
         return $this->callback;
+    }
+
+    /**
+     * Get the middleware of the route
+     * 
+     * @return array
+     */
+    public function middlewares(): array
+    {
+        return $this->middlewares;
+    }
+
+    /**
+     * Check if the route has a middleware
+     * 
+     * @return bool
+     */
+    public function hasMiddleware(): bool
+    {
+        return !empty($this->middlewares);
+    }
+
+    /**
+     * Set the middleware of the route
+     * 
+     * @param string $middleware
+     */
+    public function setMiddleware(string $middleware): void
+    {
+        $middlewareInstance = new $middleware;
+
+        if (!$middlewareInstance instanceof Middleware) {
+            throw new \Exception('Invalid middleware');
+        }
+
+        $this->middlewares[] = $middlewareInstance;
     }
 }

@@ -54,12 +54,12 @@ interface ContainerContract {
     /**
      * Call a callback with parameters
      * 
-     * @param mixed $callback
+     * @param callable $callback
      * @param array $parameters
      * 
      * @return mixed
      */
-    public function call($callback, array $parameters = []): mixed;
+    public function call(callable $callback, array $parameters = []): mixed;
 
     /**
      * Bind an instance to the container

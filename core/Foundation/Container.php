@@ -223,33 +223,13 @@ class Container implements ContainerContract
     /**
      * Call a callback with parameters
      * 
-     * @param mixed $callback
+     * @param callable $callback
      * @param array $parameters
      * 
      * @return mixed
      */
-    public function call($callback, array $parameters = []): mixed
+    public function call(callable $callback, array $parameters = []): mixed
     {
-        // If the callback is an array, we will
-        // call the controller method
-        if (is_array($callback)) {
-            $controller = $callback[0];
-            $method = $callback[1];
-
-            return $this->make($controller)->$method(...$parameters);
-        }
-
-        // If the callback is a string, we will
-        // explode the string and call the controller method
-        if (is_string($callback) && strpos($callback, '@') !== false) {
-            $callback = explode('@', $callback);
-            $controller = $callback[0];
-            $method = $callback[1];
-
-            return $this->make($controller)->$method(...$parameters);
-        }
-
-        // Otherwise, we will call the callback directly
-        return $callback(...$parameters);
+        return call_user_func_array($callback, $parameters);
     }
 }

@@ -5,6 +5,7 @@ namespace Core\Foundation;
 use Core\Foundation\Http\Request;
 use Core\Foundation\Http\Response;
 use Core\Foundation\Routing\RouteResolver;
+use Core\Foundation\Http\Middleware;
 
 class Kernel
 {
@@ -47,21 +48,40 @@ class Kernel
             // Get the matched route
             $route = $routeResolver->getMatchedRoute($request->url(), $request->method());
 
-            // Get action from the route
-            $callback = $route->callback();
+            // Get the action from the route callback
+            $action = $this->getActionFromRoute($route->callback());
 
-            /**
-             * Call the callback with the request, response and parameters
-             * 
-             * @var Response $response
-             */
-            $response = $this->container->call(
-                $callback,
-                [$request, $response, ...$routeResolver->params()]
-            );
+            // Create a new next callable
+            $next = function ($request) use ($action, $routeResolver) {
+                return call_user_func_array(
+                    $action,
+                    [$request, ...$routeResolver->params()],
+                );
+            };
+
+            // If the route has middlewares
+            // we will stack them to the next callable
+            if ($route->hasMiddleware()) {
+                $middlewares = $route->middlewares();
+
+                /**
+                 * @var Middleware $middleware
+                 */
+                foreach ($middlewares as $middleware) {
+                    // Stack the middleware to the next callable
+                    $next = function ($request) use ($middleware, $next) {
+                        return $middleware->handle($request, $next);
+                    };
+                }
+            }
+
+            // Finally, execute the next callable
+            // and get the response. This will execute
+            // the action and the middlewares, from the
+            // first to the last, like a stack.
+            $response = $next($request);
         } catch (\Exception $e) {
-            // TODO: Log and register the exception
-            $response = $response->internalServerError();
+            $response->fromException($e);
         }
 
         return $response;
@@ -77,5 +97,34 @@ class Kernel
     public function finish(Request $request, Response $response): void
     {
         $response->send();
+    }
+
+    /**
+     * Get the action from the route
+     * 
+     * @param mixed $callback
+     * 
+     * @return mixed
+     */
+    private function getActionFromRoute(mixed $callback): mixed
+    {
+        $action = $callback;
+
+        if (is_array($callback)) {
+            $controller = $callback[0];
+            $method = $callback[1];
+
+            $action = [$this->container->make($controller), $method];
+        }
+
+        if (is_string($callback) && strpos($callback, '@') !== false) {
+            $callback = explode('@', $callback);
+            $controller = $callback[0];
+            $method = $callback[1];
+
+            $action = [$this->container->make($controller), $method];
+        }
+
+        return $action;
     }
 }

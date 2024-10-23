@@ -2,10 +2,9 @@
 
 namespace Core\Foundation\Routing;
 
-use Core\Contracts\RouterContract;
 use Core\Foundation\Container;
 
-class Router implements RouterContract
+class Router
 {
     /**
      * The routes that have been registered
@@ -28,7 +27,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    protected function add(string $method, string $route, $callback): self
+    protected function add(string $method, string $route, $callback): Route
     {
         $this->routes[$method][$route] = new Route(
             $method,
@@ -36,9 +35,7 @@ class Router implements RouterContract
             $callback
         );
 
-        $this->container->instance(Router::class, $this);
-
-        return $this;
+        return $this->routes[$method][$route];
     }
 
     /**
@@ -47,7 +44,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function get(string $route, $callback): self
+    public function get(string $route, $callback): Route
     {
         return $this->add('GET', $route, $callback);
     }
@@ -58,7 +55,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function post(string $route, $callback): self
+    public function post(string $route, $callback): Route
     {
         return $this->add('POST', $route, $callback);
     }
@@ -69,7 +66,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function put(string $route, $callback): self
+    public function put(string $route, $callback): Route
     {
         return $this->add('PUT', $route, $callback);
     }
@@ -80,7 +77,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function delete(string $route, $callback): self
+    public function delete(string $route, $callback): Route
     {
         return $this->add('DELETE', $route, $callback);
     }
@@ -91,7 +88,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function patch(string $route, $callback): self
+    public function patch(string $route, $callback): Route
     {
         return $this->add('PATCH', $route, $callback);
     }
@@ -102,7 +99,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function options(string $route, $callback): self
+    public function options(string $route, $callback): Route
     {
         return $this->add('OPTIONS', $route, $callback);
     }
@@ -113,7 +110,7 @@ class Router implements RouterContract
      * @param string $route
      * @param mixed $callback
      */
-    public function any(string $route, $callback): self
+    public function any(string $route, $callback): Route
     {
         return $this->add('ANY', $route, $callback);
     }

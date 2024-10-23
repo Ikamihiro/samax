@@ -25,11 +25,19 @@ class Request
      */
     protected array $postData = [];
 
+    /**
+     * The headers from the request.
+     * 
+     * @var array
+     */
+    protected array $headers = [];
+
     public function __construct()
     {
         $this->serverData = $_SERVER;
         $this->getData = $_GET;
         $this->postData = $_POST;
+        $this->headers = getallheaders();
     }
 
     /**
@@ -155,5 +163,27 @@ class Request
             ['body' => $this->body() ?? []],
             ['query' => $this->query() ?? []]
         );
+    }
+
+    /**
+     * Get the request headers.
+     * 
+     * @return array
+     */
+    public function headers(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Get a specific header from the request.
+     * 
+     * @param string $header
+     * 
+     * @return ?string
+     */
+    public function header(string $header): ?string
+    {
+        return $this->headers[$header] ?? null;
     }
 }

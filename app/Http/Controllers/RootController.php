@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Core\Foundation\Http\Controller;
+use App\Http\Controller;
 
 class RootController extends Controller
 {
     public function index()
     {
-        $users = database()->query('SELECT id, first_name, email FROM users')->get();
+        $users = database()
+            ->query('SELECT id, full_name, email FROM users')
+            ->get();
 
-        return response()->json([
-            'message' => 'Hello, World!',
-            'users' => $users
-        ]);
+        return response()->json($users);
     }
 }

@@ -190,4 +190,37 @@ class Response
             ->cleanHeaders()
             ->setContent('Internal server error');
     }
+
+    /**
+     * Set the response as a response from an exception.
+     * 
+     * @param \Exception $e
+     * 
+     * @return $this
+     */
+    public function fromException(\Exception $e)
+    {
+        $code = $e->getCode();
+
+        if (is_string($code)) {
+            $code = 500;
+        }
+
+        if (is_string($code) && is_numeric($code)) {
+            $code = (int) $code;
+        }
+
+        if (config('app.debug')) {
+            return $this->cleanHeaders()
+                ->setStatusCode($code)
+                ->setContent(json_encode([
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTrace(),
+                ]));
+        }
+
+        return $this->internalServerError();
+    }
 }
