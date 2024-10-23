@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controller;
+use App\Repositories\UserRepository;
 
 class RootController extends Controller
 {
+    public function __construct(
+        protected UserRepository $userRepository
+    ) {}
+
     public function index()
     {
         $users = database()

@@ -3,7 +3,6 @@
 namespace Core\Foundation;
 
 use Core\Contracts\ContainerContract;
-use Core\Foundation\Routing\Router;
 
 class Container implements ContainerContract
 {
