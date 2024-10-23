@@ -59,20 +59,22 @@ class Kernel
                 );
             };
 
-            // If the route has middlewares
-            // we will stack them to the next callable
-            if ($route->hasMiddleware()) {
-                $middlewares = $route->middlewares();
+            // Get the middlewares from the route
+            // If there are no middlewares, the array
+            // will be empty.
+            $middlewares = $route->middlewares();
 
-                /**
-                 * @var Middleware $middleware
-                 */
-                foreach ($middlewares as $middleware) {
-                    // Stack the middleware to the next callable
-                    $next = function ($request) use ($middleware, $next) {
-                        return $middleware->handle($request, $next);
-                    };
-                }
+            /**
+             * Loop through the middlewares
+             * and stack them to the next callable
+             * 
+             * @var Middleware $middleware
+             */
+            foreach ($middlewares as $middleware) {
+                // Stack the middleware to the next callable
+                $next = function ($request) use ($middleware, $next) {
+                    return $middleware->handle($request, $next);
+                };
             }
 
             // Finally, execute the next callable
@@ -110,6 +112,8 @@ class Kernel
     {
         $action = $callback;
 
+        // If the callback is an array, it means
+        // that it is a controller method.
         if (is_array($callback)) {
             $controller = $callback[0];
             $method = $callback[1];
@@ -117,6 +121,8 @@ class Kernel
             $action = [$this->container->make($controller), $method];
         }
 
+        // If the callback is a string and contains
+        // the @ symbol, it means that it is a controller
         if (is_string($callback) && strpos($callback, '@') !== false) {
             $callback = explode('@', $callback);
             $controller = $callback[0];
@@ -125,6 +131,8 @@ class Kernel
             $action = [$this->container->make($controller), $method];
         }
 
+        // Otherwise, the callback is a closure
+        // so we will just return it.
         return $action;
     }
 }

@@ -84,17 +84,7 @@ class Route
      */
     public function middlewares(): array
     {
-        return $this->middlewares;
-    }
-
-    /**
-     * Check if the route has a middleware
-     * 
-     * @return bool
-     */
-    public function hasMiddleware(): bool
-    {
-        return !empty($this->middlewares);
+        return $this->middlewares ?? [];
     }
 
     /**
