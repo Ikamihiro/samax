@@ -13,6 +13,11 @@ class Router
      */
     protected array $routes = [];
 
+    /**
+     * The application instance
+     * 
+     * @var Container
+     */
     protected Container $container;
 
     public function __construct(Container $container)
@@ -27,7 +32,7 @@ class Router
      * @param string $route
      * @param mixed $callback
      */
-    protected function add(string $method, string $route, $callback): Route
+    protected function add(string $method, string $route, mixed $callback): Route
     {
         $this->routes[$method][$route] = new Route(
             $method,
