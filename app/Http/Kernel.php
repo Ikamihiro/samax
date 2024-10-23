@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Core\Foundation\Http\Middlewares\RateLimit;
 use Core\Foundation\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -12,6 +13,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected array $middlewares = [
-        // Add your middlewares here
+        RateLimit::class,
     ];
 }

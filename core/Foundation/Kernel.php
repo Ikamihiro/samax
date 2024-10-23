@@ -62,25 +62,26 @@ class Kernel
             // Get the middlewares from the route
             // If there are no middlewares, the array
             // will be empty.
-            $middlewares = $route->middlewares();
+            $middlewares = [
+                ...$this->middlewares,
+                ...$route->middlewares(),
+            ];
 
-            /**
-             * Loop through the middlewares
-             * and stack them to the next callable
-             * 
-             * @var Middleware $middleware
-             */
+            // Loop through the middlewares
+            // and stack them to the next callable
             foreach ($middlewares as $middleware) {
+                $middlewareInstance = $this->container->make($middleware);
+
                 // Stack the middleware to the next callable
-                $next = function ($request) use ($middleware, $next) {
-                    return $middleware->handle($request, $next);
+                $next = function ($request) use ($middlewareInstance, $next) {
+                    return $middlewareInstance->handle($request, $next);
                 };
             }
 
             // Finally, execute the next callable
             // and get the response. This will execute
             // the action and the middlewares, from the
-            // first to the last, like a stack.
+            // first middleware to the route action, like a stack.
             $response = $next($request);
         } catch (\Exception $e) {
             $response->fromException($e);

@@ -94,12 +94,6 @@ class Route
      */
     public function setMiddleware(string $middleware): void
     {
-        $middlewareInstance = new $middleware;
-
-        if (!$middlewareInstance instanceof Middleware) {
-            throw new \Exception('Invalid middleware');
-        }
-
-        $this->middlewares[] = $middlewareInstance;
+        $this->middlewares[] = $middleware;
     }
 }
