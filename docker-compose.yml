@@ -10,11 +10,11 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - db
+      - database
     networks:
       - samax
 
-  db:
+  database:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
