@@ -25,8 +25,6 @@ class SQLiteConnection extends AbstractConnection
             throw new \InvalidArgumentException('The configuration is empty.');
         }
 
-        return new static(
-            "sqlite:{$config['database']}"
-        );
+        return new static("sqlite:{$config['database']}");
     }
 }
